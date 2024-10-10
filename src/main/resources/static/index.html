@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevExtreme </title>
+    <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/23.1.6/css/dx.light.css">
+</head>
+<body>
+<h1>Products List</h1>
+<div id="grid"></div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Use this for jQuery -->
+<script src="https://cdn3.devexpress.com/jslib/23.1.6/js/jszip.min.js"></script>
+<script src="https://cdn3.devexpress.com/jslib/23.1.6/js/dx.all.js"></script>
+
+<script>
+    $(function()
+    {
+        fetch('/api/products')
+            .then(response => response.json())
+            .then(data => {
+                $("#grid").dxDataGrid({
+                    dataSource: data,
+                    columns: [
+                        { dataField: "id", caption: "ID" },
+                        { dataField: "name", caption: "Name" },
+                        { dataField: "price", caption: "Price" }
+                    ],
+                    paging:
+                        {
+                        pageSize: 15
+                    },
+                    pager:
+                        {
+                        showPageSizeSelector: true,
+                        allowedPageSizes: [10, 15, 20],
+                        showInfo: true
+                    },
+                    searchPanel: {
+                        visible: true,
+                        placeholder: "Search"
+                    }
+                });
+            })
+            .catch(error => console.error('Error fetching product data:', error));
+    });
+</script>
+</body>
+</html>
